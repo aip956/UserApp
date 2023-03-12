@@ -1,24 +1,30 @@
 class UsersController < ApplicationController
+    skip_before_action :verify_authenticity_token
+
     def index
-        @users = User.all
+        @users = User.select(:id, :firstname, :lastname, :age, :email).all
+        render json: @users
     end
     
     def show
+        user = User.find_by(id:params[:id])
+        render json: user.to_json
     end 
     
     def new 
-        @user = User.new
+        user = User.new
+        render json: user.to_json
     end
     
     def create 
         # Will save and redirect
         @user = User.new(allowed_params)
-
         if @user.save
-            redirect_to users_path
+            render json: @user.as_json
+            redirect_to @user.as_json(except: [:password]), status: :created
         else
             # Go back to "new" action
-            render 'new'
+            render json: @user.errors, status: :unprocessable_entity
         end
 
     end
@@ -40,11 +46,13 @@ class UsersController < ApplicationController
     def destroy
         @user = User.find(params[:id])
         if @user.destroy
-            redirect_to users_path, notice: "User successfully deleted"
+            flash[:success] = "User successfully deleted"
+            redirect_to users_path 
         else
             flash[:error] = "Error deleting user"
-            redirect_to users_pathj(@user)
+            redirect_to users_path
         end
+
     end
     
     private
