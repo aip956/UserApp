@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
     def index
         @users = User.select(:id, :firstname, :lastname, :age, :email).all
-        render json: @users
+
     end
     
     def show

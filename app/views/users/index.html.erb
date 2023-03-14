@@ -1,16 +1,39 @@
-<%= button_to 'Add User', new_user_path %>
 
-<% @users.each do |user| %>
-   <p> 
-   Name: <%= user.firstname %> <br />
-   Last: <%= user.lastname %> <br />
-   Age: <%= user.age %> <br />
-   Password: <%= user.password %> <br />
-   email: <%= user.email %> <br />  
-   <%= link_to 'Edit', edit_user_path(user) %>   
-   <%= button_to 'Delete', user, method: :delete %>
 
-   </p>
 
-<% end %>
+<html>
+<%= link_to 'Add User', new_user_path %>
+    <head>
+        <title>Users index page</title>
+    </head>
+    <body>
+         <h1>Users</h1>
+         <table>
+            <thead>
+                  <tr>
+                     <th>FirstName</th>
+                     <th>LastName</th>
+                     <th>Age</th>
+                     <th>Email</th>
+                  </tr>
+            </thead> 
+            <tbody>
+               <% @users.each do |user| %>
+                  <tr>
+                     <td><%= user.firstname %></td>
+                     <td><%=user.lastname %></td>
+                     <td><%=user.age %></td>
+                     <td><%=user.email %></td>
+                     <td><%=link_to 'Edit', edit_user_path(user) %></td>
+                     <td><%= button_to 'Delete', user, method: :delete %></td>
+                  </tr>
+               <% end %>
+            </tbody>
+        </table>
+    </body>
+</html>
+
+
+
+
 
