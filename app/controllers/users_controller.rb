@@ -42,7 +42,14 @@ class UsersController < ApplicationController
             render 'new'
         end
     end
-    
+
+    def update_password
+        user = current_user
+        user.update(password: params[:password])
+        render json: {user: user.as_json(except: :password)}
+    end
+
+        
     def destroy
         @user = User.find(params[:id])
         if @user.destroy
@@ -59,6 +66,16 @@ class UsersController < ApplicationController
         def allowed_params
             params.require(:user).permit(:firstname, :lastname, :age, :password, :email)
         end
+
+    before_action :require_login, only: [:update_password]
+    
+    def require_login
+        unless current_user
+            render json: {error: "You must be logged in to perform this action" }, status: :unauthorized
+        end
+    end
+        
+
 
 
 end

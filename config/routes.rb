@@ -6,5 +6,6 @@ Rails.application.routes.draw do
 get '/users', to: 'users#index', defaults: {format: 'json'}
 post '/users', to: 'users#create', defaults: {format: 'json'}
 post '/sign_in', to: 'sessions#create'
+put '/users/update_password', to: 'users#update_password'
   resources :users
 end
